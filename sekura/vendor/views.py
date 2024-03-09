@@ -1,18 +1,9 @@
-from django.shortcuts import (
-    render,
-    redirect,
-)
-from django.urls import (
-    reverse,
-)
-from django.views import (
-    generic,
-    View,
-)
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect, render
+from django.urls import reverse
+from django.views import View, generic
 
-from . import models
-from . import forms
+from . import forms, models
 
 
 class VendorListView(LoginRequiredMixin, generic.ListView):

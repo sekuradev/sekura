@@ -23,6 +23,5 @@ class Risk(models.Model):
     def risk(self):
         return self.likelyhood * self.impact
 
-
     def __str__(self):
         return self.title

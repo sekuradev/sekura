@@ -1,6 +1,7 @@
-from django.db import models
 import hashlib
 import os
+
+from django.db import models
 
 
 def hash_file(file, block_size=65536):
