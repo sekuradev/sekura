@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% load django_bootstrap5 %}
+
+{% block content %}
+{% if risk_id is None %}
+<form action="{% url 'risk:create' %}" method="post">
+{% else %}
+<form action="{% url 'risk:edit' risk_id %}" method="post">
+{% endif %}
+    {% csrf_token %}
+    {% bootstrap_form form layout="horizontal" %}
+    {% bootstrap_button button_type="submit" content="OK" %}
+    {% bootstrap_button button_type="reset" content="Cancel" %}
+    <a href="{% url 'risk:index' %}" class="btn btn-secondary" role="button">Back</a>
+</form>
+{% endblock %}

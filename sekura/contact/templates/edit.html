@@ -1,0 +1,14 @@
+{% extends "base.html" %} {% load django_bootstrap5 %} {% block content %} {% if
+contact_id is None %}
+<form action="{% url 'contact:create' %}" method="post">
+  {% else %}
+  <form action="{% url 'contact:edit' contact_id %}" method="post">
+    {% endif %} {% csrf_token %} {% bootstrap_form form layout="horizontal" %}
+    {% bootstrap_button button_type="submit" content="OK" %} {% bootstrap_button
+    button_type="reset" content="Cancel" %}
+    <a href="{% url 'contact:index' %}" class="btn btn-secondary" role="button"
+      >Back</a
+    >
+  </form>
+  {% endblock %}
+</form>

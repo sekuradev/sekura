@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ contact.name }}</h1>
+
+<a href="{% url 'contact:edit' contact.id %}" class="btn btn-primary" role="button">Edit</a></li>
+
+{% endblock %}

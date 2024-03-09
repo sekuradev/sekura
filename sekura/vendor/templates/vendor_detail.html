@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ object.name }}</h1>
+
+{% if object.url %}
+    <p><a href="{{ object.url }}" target="_blank">{{ object.url }}</a></p>
+{% endif %}
+
+<p>Datatypes:
+  {% for d in object.datatypes.all %}
+  <mark>{{ d }}</mark>
+  {% endfor %}
+</p>
+
+<h2>Required file types</h2>
+<ul>
+  {% for x in  object.required_datatype_files %}
+  <li>{{ x.name }}</li>
+  {% endfor %}
+</ul>
+
+<hr/>
+
+<a href="{% url 'vendor:edit' vendor.id %}" class="btn btn-primary" role="button">Edit</a></li>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if risks %}
+  <div class="container-fluid">
+    <table class="table">
+      <thead>
+        <tr>
+            <th>Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for risk in risks %}
+        <tr>
+          <td>
+            <a href="{% url 'risk:detail' risk.id %}">{{ risk.title}}</a>
+          </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+  </div>
+{% else %}
+    <p>No Risks are available.</p>
+{% endif %}
+
+
+<a href="{% url 'risk:create' %}" class="btn btn-primary" role="button">Create new</a>
+{% endblock %}

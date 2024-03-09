@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block content %} {% if contacts %}
+<div class="container-fluid">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Is staff</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for contact in contacts %}
+      <tr>
+        <td>
+          <a href="{% url 'contact:detail' contact.id %}">{{ contact.name }}</a>
+        </td>
+        <td>{{ contact.email | default:"-" }}</td>
+        <td>{{ contact.is_staff}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<p>No contacts are available.</p>
+{% endif %}
+
+<a href="{% url 'contact:create' %}" class="btn btn-primary" role="button"
+  >Create new</a
+>
+{% endblock %}

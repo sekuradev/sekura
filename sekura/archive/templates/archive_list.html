@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if archives %}
+<div class="container-fluid">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for archive in archives %}
+      <tr>
+        <td>
+          <a href="{% url 'archive:detail' archive.id %}">{{ archive.name }}</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<p>No archives are available.</p>
+{% endif %}
+
+<a href="{% url 'archive:create' %}" class="btn btn-primary" role="button" >Create new</a>
+{% endblock %}

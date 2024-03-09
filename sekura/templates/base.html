@@ -1,0 +1,44 @@
+{% load django_bootstrap5 %}
+
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Splashec{% block title %}{% endblock %}</title>
+
+    {% bootstrap_css %}
+    <link href="//cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+  </head>
+  <body>
+    {% block header %}
+    <header class="p-3 text-bg-dark">
+      <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+          <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+            <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+          </a>
+
+          <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
+            <li><a href="{% url 'contact:index' %}" class="nav-link px-2 text-white">Contacts</a></li>
+            <li><a href="{% url 'archive:index' %}" class="nav-link px-2 text-white">Archives</a></li>
+            <li><a href="{% url 'vendor:index' %}" class="nav-link px-2 text-white">Vendors</a></li>
+            <li><a href="{% url 'risk:index' %}" class="nav-link px-2 text-white">Risks</a></li>
+            <li><a href="{% url 'admin:index' %}" class="nav-link px-2 text-white">Admin</a></li>
+          </ul>
+
+          <ul class="nav text-end"></ul>
+        </div>
+      </div>
+    </header>
+    {% endblock %}
+    <main class="container-fluid">
+        {% bootstrap_messages %}
+        {% block content %}
+        {% endblock %}
+    </main>
+    {% bootstrap_javascript %}
+  </body>
+</html>
+

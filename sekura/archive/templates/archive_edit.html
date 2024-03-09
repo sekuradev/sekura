@@ -1,0 +1,22 @@
+{% extends "base.html" %} {% load django_bootstrap5 %} {% block content %} {% if
+archive_id is None %}
+<form
+  action="{% url 'archive:create' %}"
+  method="post"
+  enctype="multipart/form-data"
+>
+  {% else %}
+  <form
+    action="{% url 'archive:edit' archive_id %}"
+    method="post"
+    enctype="multipart/form-data"
+  >
+    {% endif %} {% csrf_token %} {% bootstrap_form form layout="horizontal" %}
+    {% bootstrap_button button_type="submit" content="OK" %} {% bootstrap_button
+    button_type="reset" content="Cancel" %}
+    <a href="{% url 'archive:index' %}" class="btn btn-secondary" role="button"
+      >Back</a
+    >
+  </form>
+  {% endblock %}
+</form>

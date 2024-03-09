@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ object.title}}</h1>
+
+<p>{{ object.description }}</p>
+<ul>
+    <li><b>Risk: </b> {{ object.risk }} <small>(likelyhood: {{ object.likelyhood }}, impact: {{ object.impact }}) </small></li>
+    <li><b>Treatment: </b>{{ object.treatment }}</li>
+    <li>
+        <b>CIA:</b>
+        {% if object.confidentiality %}<mark>Confidentiality</mark>{% endif %}
+        {% if object.integrity %}<mark>Integrity</mark>{% endif %}
+        {% if object.availability %}<mark>Availability</mark>{% endif %}
+    </li>
+    <li><b>Custom ID: </b> {{ object.custom_id }}</li>
+</ul>
+
+<a href="{% url 'risk:edit' object.id %}" class="btn btn-primary" role="button">Edit</a></li>
+
+{% endblock %}

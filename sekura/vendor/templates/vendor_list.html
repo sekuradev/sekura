@@ -1,0 +1,37 @@
+{% extends "base.html" %} {% block content %} {% if vendors %}
+<div class="container-fluid">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>URL</th>
+        <th>Responsible</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for vendor in vendors %}
+      <tr>
+        <td>
+          <a href="{% url 'vendor:vendor_detail' vendor.id %}"
+            >{{ vendor.name }}</a
+          >
+        </td>
+        <td>
+          {% if vendor.url %}
+          <a target="_blank" href="{{ vendor.url }}">Link</a>
+          {% endif %}
+        </td>
+        <td>{{ vendor.contact.as_text | default:"" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<p>No vendors are available.</p>
+{% endif %}
+
+<a href="{% url 'vendor:create' %}" class="btn btn-primary" role="button"
+  >Create new</a
+>
+{% endblock %}
