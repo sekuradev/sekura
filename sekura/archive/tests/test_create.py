@@ -3,6 +3,8 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from bs4 import BeautifulSoup
 from io import StringIO
+from django.conf import settings
+import tempfile
 
 from .. import models
 
@@ -13,6 +15,8 @@ class CreateTest(TestCase):
         user = User.objects.create_user(username=login, password=pwd)
         self.client = Client()
         self.client.login(username=login, password=pwd)
+        settings.MEDIA_ROOT = tempfile.mkdtemp()
+
 
     def test_get_returns_form(self):
         r = self.client.get(reverse("archive:create"))
