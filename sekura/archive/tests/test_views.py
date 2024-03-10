@@ -13,6 +13,5 @@ class ListTest(TestCase):
 
     def test_no_archives(self):
         r = self.client.get(reverse("archive:index"))
-        assert r.response_code == 200
-
-
+        assert r.status_code == 200
+        assert b"No archives are available" in r.content
