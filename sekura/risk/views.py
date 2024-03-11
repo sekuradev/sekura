@@ -35,16 +35,12 @@ class CreateView(LoginRequiredMixin, View):
 
 class EditView(LoginRequiredMixin, View):
     def get(self, request, pk):
-        if pk is None:
-            return redirect(reverse("risk:create"))
         risk = models.Risk.objects.get(pk=pk)
         form = forms.Risk(instance=risk)
 
         return render(request, "risk_edit.html", {"form": form, "risk": pk})
 
     def post(self, request, pk):
-        if pk is None:
-            return redirect(reverse("risk:create"))
         risk = models.Risk.objects.get(pk=pk)
         form = forms.Risk(request.POST, instance=risk)
         if form.is_valid():

@@ -36,16 +36,12 @@ class ContactCreateView(LoginRequiredMixin, View):
 
 class ContactEditView(LoginRequiredMixin, View):
     def get(self, request, pk):
-        if pk is None:
-            return redirect(reverse("contact:create"))
         contact = models.Contact.objects.get(pk=pk)
         form = forms.Contact(instance=contact)
 
         return render(request, "edit.html", {"form": form, "contact_id": pk})
 
     def post(self, request, pk):
-        if pk is None:
-            return redirect(reverse("contact:create"))
         contact = models.Contact.objects.get(pk=pk)
         form = forms.Contact(request.POST, instance=contact)
         if form.is_valid():

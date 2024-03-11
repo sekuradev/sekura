@@ -3,10 +3,10 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
-{% if risk_id is None %}
+{% if risk is None %}
 <form action="{% url 'risk:create' %}" method="post">
 {% else %}
-<form action="{% url 'risk:edit' risk_id %}" method="post">
+<form action="{% url 'risk:edit' risk %}" method="post">
 {% endif %}
     {% csrf_token %}
     {% bootstrap_form form layout="horizontal" %}

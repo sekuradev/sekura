@@ -35,16 +35,12 @@ class CreateView(LoginRequiredMixin, View):
 class EditView(LoginRequiredMixin, View):
     def get(self, request, pk):
         archive = models.Archive.objects.get(pk=pk)
-        if pk is None:
-            return redirect(reverse("archive:create"))
         form = forms.Archive(instance=archive)
 
         return render(request, "archive_edit.html", {"form": form, "archive_id": pk})
 
     def post(self, request, pk):
         archive = models.Archive.objects.get(pk=pk)
-        if pk is None:
-            return redirect(reverse("archive:create"))
         form = forms.Archive(request.POST, request.FILES, instance=archive)
         if form.is_valid():
             form.save()
