@@ -56,5 +56,5 @@ jobs:
         run: |
           source .venv/bin/activate
           cd sekura
-          pytest tests/
+          pytest
           #coverage report
