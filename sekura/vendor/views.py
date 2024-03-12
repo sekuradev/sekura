@@ -35,16 +35,12 @@ class VendorCreateView(LoginRequiredMixin, View):
 
 class VendorEditView(LoginRequiredMixin, View):
     def get(self, request, pk):
-        if pk is None:
-            return redirect(reverse("vendor:create"))
         vendor = models.Vendor.objects.get(pk=pk)
         form = forms.Vendor(instance=vendor)
 
         return render(request, "vendor_edit.html", {"form": form, "vendor_id": pk})
 
     def post(self, request, pk):
-        if pk is None:
-            return redirect(reverse("vendor:create"))
         vendor = models.Vendor.objects.get(pk=pk)
         form = forms.Vendor(request.POST, instance=vendor)
         if form.is_valid():

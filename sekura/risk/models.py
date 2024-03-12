@@ -18,7 +18,7 @@ class Risk(models.Model):
     confidentiality = models.BooleanField(default=False)
     integrity = models.BooleanField(default=False)
     availability = models.BooleanField(default=False)
-    custom_id = models.CharField(max_length=20)
+    custom_id = models.CharField(max_length=20, blank=True, null=True)
 
     def risk(self):
         return self.likelyhood * self.impact
