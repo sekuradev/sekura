@@ -57,3 +57,5 @@ jobs:
           source .venv/bin/activate
           cd sekura
           pytest --codecov
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
