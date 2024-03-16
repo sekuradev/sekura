@@ -1,12 +1,22 @@
 {% extends "base.html" %}
+{% load django_bootstrap5 %}
 
 {% block content %}
 {% if risks %}
   <div class="container-fluid">
+    <form method="get" action="{% url 'risk:index' %}">
+      <div class="input-group mb-3">
+        <input class="form-control" type="text" value="{{q}}" name="q" placeholder="Filter"/>
+        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Filter</button>
+      </div>
+    </form>
+
     <table class="table">
       <thead>
         <tr>
             <th>Title</th>
+            <th>Risk</th>
+            <th>Threatment</th>
         </tr>
       </thead>
       <tbody>
@@ -15,6 +25,8 @@
           <td>
             <a href="{% url 'risk:detail' risk.id %}">{{ risk.title}}</a>
           </td>
+          <td>{{ risk.risk }}</td>
+          <td>{% if risk.treatment %}{{ risk.get_treatment_display }}{% endif %}</td>
         </tr>
         {% endfor %}
         </tbody>
@@ -24,6 +36,7 @@
     <p>No risks are available.</p>
 {% endif %}
 
+{% bootstrap_pagination page_obj size="sm" %}
 
 <a href="{% url 'risk:create' %}" class="btn btn-primary" role="button">Create new</a>
 {% endblock %}
