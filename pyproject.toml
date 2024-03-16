@@ -12,7 +12,8 @@ django = "^5.0.2"
 django-bootstrap-form = "^3.4"
 django-bootstrap5 = "^23.4"
 sentry-sdk = {extras = ["django"], version = "^1.40.6"}
-
+factory-boy = "^3.3.0"
+faker = "^24.2.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0.0"
@@ -20,8 +21,6 @@ ipython = "^8.21.0"
 pytest-django = "^4.8.0"
 pytest-cov = "^4.1.0"
 beautifulsoup4 = "^4.12.3"
-factory-boy = "^3.3.0"
-faker = "^24.1.0"
 
 [build-system]
 requires = ["poetry-core"]

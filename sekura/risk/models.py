@@ -21,7 +21,7 @@ class Risk(models.Model):
     custom_id = models.CharField(max_length=20, blank=True, null=True)
 
     def risk(self):
-        return self.likelyhood * self.impact
+        return int(self.likelyhood * self.impact / 10)
 
     def __str__(self):
         return self.title

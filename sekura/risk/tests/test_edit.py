@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from . import factories
+from .. import factories
 
 
 class EditTest(TestCase):
