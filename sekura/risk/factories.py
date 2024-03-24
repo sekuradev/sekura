@@ -1,16 +1,16 @@
 import factory
-from faker import Faker
+
+from sekura import factories
 
 from . import models
-
-fake = Faker()
 
 
 class RiskFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Risk
 
-    title = factory.LazyFunction(fake.sentence)
-    description = factory.LazyFunction(fake.text)
-    likelyhood = fake.pyint(0, 10)
-    impact = fake.pyint(0, 10)
+    title = factory.Faker("sentence")
+    description = factory.Faker("text")
+    likelyhood = factory.Faker("pyint", min_value=0, max_value=10)
+    impact = factory.Faker("pyint", min_value=0, max_value=10)
+    owner = factory.SubFactory(factories.UserFactory)

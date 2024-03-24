@@ -1,26 +1,27 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View, generic
+from guardian.mixins import PermissionListMixin  # PermissionRequiredMixin,
 
 from . import forms, models
 
 
-class ListView(LoginRequiredMixin, generic.ListView):
+class ListView(LoginRequiredMixin, PermissionListMixin, generic.ListView):
+    model = models.Risk
     template_name = "risk_list.html"
     context_object_name = "risks"
     paginate_by = 10
-    model = models.Risk
-
-    def ____get_queryset(self):
-        return models.Risk.objects.order_by("title")
+    permission_required = models.RiskPermissions.VIEW
 
     def get_queryset(self):
-        m = models.Risk
+        m = models.Risk.get_for_user(self.request.user)
         filter_val = self.request.GET.get("q")
         order = self.request.GET.get("orderby", "title")
-        new_context = m.objects.filter(title__icontains=filter_val) if filter_val else m.objects.all()
-        return new_context.order_by(order)
+        if filter_val:
+            m = m.filter(title__icontains=filter_val)
+        return m.order_by(order)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -42,7 +43,11 @@ class CreateView(LoginRequiredMixin, View):
     def post(self, request):
         form = forms.Risk(request.POST)
         if form.is_valid():
-            obj = form.save()
+            obj = form.save(commit=False)
+            if obj.owner is None:
+                obj.owner = request.owner
+            obj.save()
+            messages.add_message(request, messages.INFO, "Risk created.")
             return redirect(reverse("risk:detail", kwargs={"pk": obj.pk}))
 
         return render(request, "risk_edit.html", {"form": form})
@@ -59,7 +64,8 @@ class EditView(LoginRequiredMixin, View):
         risk = models.Risk.objects.get(pk=pk)
         form = forms.Risk(request.POST, instance=risk)
         if form.is_valid():
-            form.save()
+            risk = form.save()
+            messages.add_message(request, messages.INFO, "Risk updated.")
             return redirect(reverse("risk:detail", kwargs={"pk": pk}))
 
         return render(request, "risk_edit.html", {"form": form, "risk": pk})
