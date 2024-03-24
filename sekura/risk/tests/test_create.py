@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from django.urls import reverse
 from faker import Faker
+from guardian.shortcuts import assign_perm
 
 from .. import models
 
@@ -13,12 +14,14 @@ class CreateTest(TestCase):
     def setUp(self):
         login = fake.email()
         pwd = fake.password()
-        User.objects.create_user(username=login, password=pwd)
+        self.user = User.objects.create_user(username=login, password=pwd)
         self.client = Client()
         self.client.login(username=login, password=pwd)
 
     def test_get_returns_form(self):
         # GIVEN
+        assign_perm(models.RiskPermissions.ADD, self.user)
+
         # WHEN
         r = self.client.get(reverse("risk:create"))
 
@@ -33,6 +36,7 @@ class CreateTest(TestCase):
 
     def test_post_empty_returns_invalid_form(self):
         # GIVEN
+        assign_perm(models.RiskPermissions.ADD, self.user)
 
         # WHEN
         r = self.client.post(reverse("risk:create"))
@@ -42,8 +46,9 @@ class CreateTest(TestCase):
 
     def test_post_valid(self):
         # GIVEN
+        assign_perm(models.RiskPermissions.ADD, self.user)
         # WHEN
-        r = self.client.post(
+        self.client.post(
             reverse("risk:create"),
             {
                 "title": fake.sentence(),
@@ -52,6 +57,5 @@ class CreateTest(TestCase):
                 "impact": fake.pyint(0, 10),
             },
         )
-        print(r.content)
         # THEN
         assert models.Risk.objects.count() == 1

@@ -4,14 +4,10 @@ from guardian.shortcuts import assign_perm, get_objects_for_user, remove_perm
 
 
 class RiskPermissions:
-    VIEW = "view_risk"
-    CHANGE = "change_risk"
-    DELETE = "delete_risk"
-    ADD = "add_risk"
-
-    @classmethod
-    def tuple(cls):
-        return (cls.VIEW, cls.CHANGE)
+    VIEW = "risk.view_risk"
+    CHANGE = "risk.change_risk"
+    DELETE = "risk.delete_risk"
+    ADD = "risk.add_risk"
 
 
 class Risk(models.Model):
@@ -59,5 +55,6 @@ class Risk(models.Model):
         super().save(force_insert, force_update, using, update_fields)
         if self.owner != self._original_owner:
             for perm in (RiskPermissions.VIEW, RiskPermissions.CHANGE, RiskPermissions.DELETE):
-                remove_perm(perm, self._original_owner, self)
+                if self._original_owner:
+                    remove_perm(perm, self._original_owner, self)
                 assign_perm(perm, self.owner, self)

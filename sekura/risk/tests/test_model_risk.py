@@ -29,7 +29,8 @@ class RiskModelTest(TestCase):
         # GIVEN
         user = global_factories.UserFactory.create()
         risk = factories.RiskFactory.create()
-        risk.set_owner(user)
+        risk.owner = user
+        risk.save()
 
         # WHEN
         risk_list = list(models.Risk.get_for_user(user))
@@ -39,12 +40,11 @@ class RiskModelTest(TestCase):
         assert risk_list[0].title == risk.title
         assert risk_list[0].description == risk.description
 
-    def test_permission_view_all(self):
+    def test_permission_allow_view(self):
         # GIVEN
         user1 = global_factories.UserFactory.create()
         user2 = global_factories.UserFactory.create()
-        risk = factories.RiskFactory.create()
-        risk.set_owner(user1)
+        risk = factories.RiskFactory.create(owner=user1)
         risk.allow_view(user2)
 
         # WHEN

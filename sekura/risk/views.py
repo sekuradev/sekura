@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View, generic
-from guardian.mixins import PermissionListMixin  # PermissionRequiredMixin,
+from guardian.mixins import PermissionListMixin, PermissionRequiredMixin
 
 from . import forms, models
 
@@ -30,12 +30,15 @@ class ListView(LoginRequiredMixin, PermissionListMixin, generic.ListView):
         return context
 
 
-class DetailView(LoginRequiredMixin, generic.DetailView):
+class DetailView(LoginRequiredMixin, PermissionRequiredMixin, generic.DetailView):
     model = models.Risk
     template_name = "risk_detail.html"
+    permission_required = models.RiskPermissions.VIEW
 
 
-class CreateView(LoginRequiredMixin, View):
+class CreateView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = models.RiskPermissions.ADD
+
     def get(self, request):
         form = forms.Risk()
         return render(request, "risk_edit.html", {"form": form})
@@ -45,7 +48,7 @@ class CreateView(LoginRequiredMixin, View):
         if form.is_valid():
             obj = form.save(commit=False)
             if obj.owner is None:
-                obj.owner = request.owner
+                obj.owner = request.user
             obj.save()
             messages.add_message(request, messages.INFO, "Risk created.")
             return redirect(reverse("risk:detail", kwargs={"pk": obj.pk}))
@@ -53,7 +56,9 @@ class CreateView(LoginRequiredMixin, View):
         return render(request, "risk_edit.html", {"form": form})
 
 
-class EditView(LoginRequiredMixin, View):
+class EditView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = models.RiskPermissions.CHANGE
+
     def get(self, request, pk):
         risk = models.Risk.objects.get(pk=pk)
         form = forms.Risk(instance=risk)
